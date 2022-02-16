@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Fetch } from './Fetch';
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
           Learn React
         </a>
       </header>
+      <p>
+        <Fetch url="https://api.github.com/gists/public" />
+      </p>
     </div>
   );
 }
