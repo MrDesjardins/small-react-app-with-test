@@ -1,28 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Fetch } from './Fetch';
+import "./App.css";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { Page1 } from "./Page1";
+import { Page2 } from "./Page2";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div>
+      <BrowserRouter>
+        <nav
+          style={{
+            borderBottom: "solid 1px",
+            paddingBottom: "1rem",
+          }}
         >
-          Learn React
-        </a>
-      </header>
-      <p>
-        <Fetch url="https://api.github.com/gists/public" />
-      </p>
+          <Link to="/page1">Page 1</Link> | <Link to="/page2">Page 2</Link>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Page1 />} />
+          <Route path="page1" element={<Page1 />} />
+          <Route path="page2" element={<Page2 />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
