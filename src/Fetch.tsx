@@ -1,54 +1,67 @@
-import React, {useState, useReducer} from 'react'
-import axios from 'axios'
-
+import React, { useState, useReducer } from "react";
+import axios from "axios";
+interface State {
+  error: string | null;
+  greeting: string | null;
+}
 const initialState = {
   error: null,
   greeting: null,
+};
+
+interface Action {
+  type: "SUCCESS" | "ERROR";
+  greeting?: string | null;
+  error?: string | null;
 }
 
-function greetingReducer(state, action) {
+function greetingReducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'SUCCESS': {
+    case "SUCCESS": {
       return {
         error: null,
-        greeting: action.greeting,
-      }
+        greeting: action.greeting ?? null,
+      };
     }
-    case 'ERROR': {
+    case "ERROR": {
       return {
-        error: action.error,
+        error: action.error ?? null,
         greeting: null,
-      }
+      };
     }
     default: {
-      return state
+      return state;
     }
   }
 }
 export interface FetchProps {
   url: string;
 }
-export function Fetch(props:FetchProps) {
-  const [{error, greeting}, dispatch] = useReducer(
+export function Fetch(props: FetchProps) {
+  const [{ error, greeting }, dispatch] = useReducer(
     greetingReducer,
-    initialState,
-  )
-  const [buttonClicked, setButtonClicked] = useState(false)
+    initialState
+  );
+  const [buttonClicked, setButtonClicked] = useState(false);
 
-  const fetchGreeting = async (url:string) =>
+  const fetchGreeting = async (url: string) =>
     axios
-      .get(url)
-      .then(response => {
-        const {data} = response
-        const {greeting} = data
-        dispatch({type: 'SUCCESS', greeting})
-        setButtonClicked(true)
+      .get(url, {
+        headers: {
+          "authorization": "Bearer " + process.env.REACT_APP_GIT_TOKEN
+        }
       })
-      .catch(error => {
-        dispatch({type: 'ERROR', error})
+      .then((response) => {
+        const { data } = response;
+        const { greeting } = data;
+        dispatch({ type: "SUCCESS", greeting });
+        setButtonClicked(true);
       })
+      .catch((error) => {
+        dispatch({ type: "ERROR", error });
+      });
 
-  const buttonText = buttonClicked ? 'Ok' : 'Load Greeting'
+  const buttonText = buttonClicked ? "Ok" : "Load Greeting";
 
   return (
     <div>
@@ -58,5 +71,5 @@ export function Fetch(props:FetchProps) {
       {greeting && <h1>{greeting}</h1>}
       {error && <p role="alert">Oops, failed to fetch!</p>}
     </div>
-  )
+  );
 }

@@ -1,8 +1,7 @@
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import React from "react";
 import { Fetch } from "./Fetch";
 
 const server = setupServer(
